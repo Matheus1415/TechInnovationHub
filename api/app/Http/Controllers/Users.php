@@ -45,11 +45,12 @@ class Users extends Controller
             $user = User::create([
                 'name' => $validatedData['name'],
                 'email' => $validatedData['email'],
-                'password' => Hash::make($validatedData['senha']),
+                'profile' => $validatedData['profile'],
+                'password' => Hash::make($validatedData['password']),
                 'typeUser' => $validatedData['typeUser'],
-                'cidade' => $validatedData['cidade'],
+                'cit' => $validatedData['cit'],
                 'UF' => $validatedData['UF'],
-                'telefone' => $validatedData['telefone'],
+                'tel' => $validatedData['tel'],
             ]);
     
             return response()->json(['message' => 'Usuário criado com sucesso!', 'user' => $user], 201);
@@ -98,12 +99,13 @@ class Users extends Controller
     
             // Atualiza os dados do usuário
             $user->name = $validatedData['name'];
+            $user->profile = $validatedData['profile'];
             $user->email = $validatedData['email'];
-            $user->password = Hash::make($validatedData['senha']); 
+            $user->password = Hash::make($validatedData['password']); 
             $user->typeUser = $validatedData['typeUser'];
-            $user->cidade = $validatedData['cidade'];
+            $user->cit = $validatedData['cit'];
             $user->UF = $validatedData['UF'];
-            $user->telefone = $validatedData['telefone'];
+            $user->tel = $validatedData['tel'];
             
             $user->save(); // Salva as alterações no banco de dados
     

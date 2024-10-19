@@ -22,3 +22,4 @@ Route::get('/all-startup',[Startup::class,'index'])->name("startup.index");
 Route::post('/create-startup',[Startup::class,'store'])->name("startup.store");
 Route::get('/startup/{id}',[Startup::class,"show"])->name("startup.show");
 Route::put('/startup/{id}/edit',[Startup::class,"update"])->name("startup.update");
+Route::delete('/startup/{id}/delete', [Startup::class, 'destroy'])->name("startup.destroy");

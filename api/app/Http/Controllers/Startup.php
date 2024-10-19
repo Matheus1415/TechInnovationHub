@@ -133,6 +133,25 @@ class Startup extends Controller
 
     public function destroy(string $id)
     {
-        //
+        try {
+            $startup = ModelsStartup::find($id);//Emcontra a Startuo pelo ID
+            if (is_null($startup)) { // Verifica se o usuário não foi encontrado
+                return response()->json(['message' => 'Parece que essa startup não existe na base de dados'], 404);
+            }
+
+            $startup->delete(); // Deleta o startup
+            
+            return response()->json([
+                'message' => 'Startup deletado com sucesso.',
+                'startup' => $startup,
+            ], 200); 
+
+        } catch (\Exception $e) {
+            // Captura qualquer exceção e retorna a mensagem de erro
+            return response()->json([
+                'error' => 'Ocorreu um erro ao atualizar a startup.',
+                'message' => env('APP_ENV') === 'local' ? $e->getMessage() : 'Erro inesperado. Tente novamente mais tarde.'
+            ], 500);
+        }
     }
 }

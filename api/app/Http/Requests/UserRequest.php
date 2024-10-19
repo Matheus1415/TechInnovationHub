@@ -18,11 +18,12 @@ class UserRequest extends FormRequest
         return [
             'name' => 'required|string|max:255',
             'email' => 'required|string|email|max:255|unique:users',
-            'senha' => 'required|string|min:8',
+            'profile' =>'required|string|max:255',
+            'password' => 'required|string|min:8',
             'typeUser' => 'required|integer',
-            'cidade' => 'required|string|max:255',
+            'cit' => 'required|string|max:255',
             'UF' => 'required|string|max:2',
-            'telefone' => 'required|string|max:20',
+            'tel' => 'required|string|max:20',
         ];
     }
 
@@ -31,6 +32,8 @@ class UserRequest extends FormRequest
         return [
             'name.required' => 'O campo nome é obrigatório.',
             'name.max' => 'O campo nome deve ter no máximo 255 caracteres.',
+            'profile.required' => 'O campo profile é obrigatório.',
+            'profile.string' => 'O campo deve ser do tipo string.',
             'email.required' => 'O campo e-mail é obrigatório.',
             'email.unique' => 'Ops! Parece que este e-mail já está cadastrado.',
             'senha.required' => 'O campo senha é obrigatório.',
