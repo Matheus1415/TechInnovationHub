@@ -11,9 +11,9 @@ return new class extends Migration
     {
         Schema::create('propostas', function (Blueprint $table) {
             $table->id();
-            $table->integer("envestimentos")->default(0);
+            $table->integer("investimentos")->default(0);
             $table->foreignId('user_id')->constrained('users')->onDelete('cascade'); 
-            $table->foreignId('startup_id')->constrained('startup')->onDelete('cascade'); 
+            $table->foreignId('startup_id')->constrained('startups')->onDelete('cascade'); 
             $table->timestamps();
         });
     }

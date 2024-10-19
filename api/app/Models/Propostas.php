@@ -10,7 +10,7 @@ class Propostas extends Model
     use HasFactory;
 
     protected $fillable = [
-        'envestimentos',
+        'investimentos',
         'user_id',
         'startup_id',
     ];
