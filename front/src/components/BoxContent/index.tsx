@@ -1,22 +1,29 @@
 import React, { useState, useEffect } from 'react';
-import NextJsLogo from '../../assets/ui/js.svg';
+import { IcosDev } from '../IcosDev';
 
 interface BoxContentProps {
-    width?: 100 | 75 | 65 | 55 | 50 | 45 | 40 | 30 | 20 | 10;
+    width?: number;
     height?: number;
 }
 
 export const BoxContent: React.FC<BoxContentProps> = ({ width = 50, height = 700 }) => {
     const [timeRemaining, setTimeRemaining] = useState('');
+    const [colorTime, setColorTime] = useState('white');
 
     useEffect(() => {
-        const totalSeconds = 3700; 
+        const totalSeconds = 3600; 
         let remainingSeconds = totalSeconds;
 
         const intervalId = setInterval(() => {
             const hrs = Math.floor(remainingSeconds / 3600);
             const mins = Math.floor((remainingSeconds % 3600) / 60);
             const secs = remainingSeconds % 60;
+            
+            if(mins < 30){
+                setColorTime("#ef4444");
+            }else if (hrs < 2){
+                setColorTime("#fbbf24");
+            }
 
             setTimeRemaining(`${hrs.toString().padStart(2, '0')}:${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`);
 
@@ -26,7 +33,7 @@ export const BoxContent: React.FC<BoxContentProps> = ({ width = 50, height = 700
             if (remainingSeconds < 0) {
                 clearInterval(intervalId);
             }
-        }, 1000); // Atualiza a cada 1 segundo
+        }, 1000); 
 
         return () => clearInterval(intervalId); // Limpa o intervalo ao desmontar o componente
     }, []);
@@ -42,7 +49,7 @@ export const BoxContent: React.FC<BoxContentProps> = ({ width = 50, height = 700
             <h1 className='text-[40px] mt-2'>Tecnologia Inovação e conhecimento</h1>
             <div style={{ borderBottom: "1px solid #334155" }} className="mt-6 flex flex-row justify-between">
                 <p className="p-1 text-[18px] w-[200px] font-bold">5 de Agosto de 2024</p>
-                <p className="p-1 text-[18px] w-[200px] font-bold">Encerra em: {timeRemaining}</p>
+                <p className="p-1 text-[18px] w-[200px] font-bold">Encerra em: <span style={{color:colorTime}}>{timeRemaining}</span></p>
             </div>
             <div style={{ borderBottom: "1px solid #334155" }} className="mt-6">
                 <p className="p-1 text-[18px] w-full font-bold">
@@ -52,7 +59,14 @@ export const BoxContent: React.FC<BoxContentProps> = ({ width = 50, height = 700
             <div style={{ borderBottom: "1px solid #334155" }} className="mt-6">
                 <p className="p-1 text-[25px] w-full font-bold uppercase">Tecnologias</p>
                 <div className='mt-6 mb-5'>
-                    <img src={NextJsLogo} className='w-full max-w-[50px]' alt="Next.js Logo" width={50} height={50} />
+                <IcosDev icons={["js", "react", "php", "angular", "laravel", "csharp", "c", "java", "kotlin", "python", "r", "vue", "html", "css", "tailwind", "sass", "less"]} />
+                </div>
+            </div>
+            <div className="mt-6">
+                <p className="p-1 text-[25px] w-full font-bold uppercase">Criador</p>
+                <div className='flex  items-center gap-2'>
+                    <div className="bg-slate-400 rounded-full p-4 text-white text-[25px] w-[70px] h-[70px] flex justify-center items-center mt-3">MP</div>
+                    <p className='text-[25px] w-full'>Matheus Pereira da Silva</p>
                 </div>
             </div>
         </div>
