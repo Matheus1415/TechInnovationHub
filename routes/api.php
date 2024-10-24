@@ -13,7 +13,7 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 
 //Rotas do Usúario
 Route::get('/all-users',[Users::class,'index'])->name("users.index");
-Route::post('/create-users',[Users::class,'store'])->name("users.store");
+Route::post('/create-user',[Users::class,'store'])->name("users.store");
 Route::get('/users/{id}', [Users::class, 'update'])->name("users.show");
 Route::post('/users/{id}/edit', [Users::class, 'update'])->name("users.update");
 Route::delete('/users/{id}', [Users::class, 'destroy'])->name("users.destroy");
