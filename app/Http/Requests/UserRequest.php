@@ -20,7 +20,7 @@ class UserRequest extends FormRequest
             'email' => 'required|string|email|max:255|unique:users',
             'profile' =>'required|string|max:255',
             'password' => 'required|string|min:8',
-            'typeUser' => 'required|integer',
+            'typeUser' => 'integer',
             'cit' => 'required|string|max:255',
             'UF' => 'required|string|max:2',
             'tel' => 'required|string|max:20',

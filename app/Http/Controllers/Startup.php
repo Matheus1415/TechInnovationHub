@@ -6,6 +6,7 @@ use App\Http\Requests\StartupRequest;
 use App\Models\Startup as ModelsStartup;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class Startup extends Controller
 {
@@ -13,12 +14,12 @@ class Startup extends Controller
     public function index()
     {
         try {
-            $allUsers = ModelsStartup::all();
-            if ($allUsers->isEmpty()) {
+            $allStartaps = ModelsStartup::all();
+            if ($allStartaps->isEmpty()) {
                 return response()->json('Parece que não existe nenhuma Startup na base de dados', 404);
             }
 
-            return response()->json($allUsers, 200);
+            return response()->json($allStartaps, 200);
         }catch (\Exception $e) {
             // Captura qualquer exceção e retorna a mensagem de erro
             return response()->json([
@@ -26,12 +27,6 @@ class Startup extends Controller
                 'message' => env('APP_ENV') === 'local' ? $e->getMessage() : 'Erro inesperado. Tente novamente mais tarde.'
             ], 500);
         }
-    }
-
-
-    public function create()
-    {
-        //
     }
 
     public function store(StartupRequest $request)
@@ -71,7 +66,6 @@ class Startup extends Controller
         }
     }
 
-
     public function show(string $id)
     {
         try {
@@ -90,10 +84,6 @@ class Startup extends Controller
         }
     }
 
-    public function edit(string $id)
-    {
-        //
-    }
 
     public function update(StartupRequest $request, string $id)
     {
@@ -133,6 +123,32 @@ class Startup extends Controller
 
     public function destroy(string $id)
     {
+        try {
+            $startup = ModelsStartup::find($id);//Emcontra a Startuo pelo ID
+            if (is_null($startup)) { // Verifica se o usuário não foi encontrado
+                return response()->json(['message' => 'Parece que essa startup não existe na base de dados'], 404);
+            }
+
+            $startup->delete(); // Deleta o startup
+            
+            return response()->json([
+                'message' => 'Startup deletado com sucesso.',
+                'startup' => $startup,
+            ], 200); 
+
+        } catch (\Exception $e) {
+            // Captura qualquer exceção e retorna a mensagem de erro
+            return response()->json([
+                'error' => 'Ocorreu um erro ao atualizar a startup.',
+                'message' => env('APP_ENV') === 'local' ? $e->getMessage() : 'Erro inesperado. Tente novamente mais tarde.'
+            ], 500);
+        }
+    }
+
+    public function destroyGroup(string $id)
+    {
+        $user = Auth::user();
+        dd($user);
         try {
             $startup = ModelsStartup::find($id);//Emcontra a Startuo pelo ID
             if (is_null($startup)) { // Verifica se o usuário não foi encontrado

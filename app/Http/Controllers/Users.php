@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Http\Requests\UserRequest;
 //Models
 use App\Models\User;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 
 class Users extends Controller
@@ -22,7 +23,7 @@ class Users extends Controller
 
             return response()->json($allUsers, 200);
         }catch (\Exception $e) {
-            // Captura qualquer exceção e retorna a mensagem de erro
+            // Capatura qualquer exceção e retorna a mensagem de erro
             return response()->json([
                 'error' => 'Ocorreu um erro ao buscar todos os usuário.',
                 'message' => env('APP_ENV') === 'local' ? $e->getMessage() : 'Erro inesperado. Tente novamente mais tarde.'
@@ -30,9 +31,27 @@ class Users extends Controller
         }
     }
 
-    public function create()
+    public function createTypeUser(Request $request)
     {
-        //
+        try {
+            $user = User::find($request->id); 
+            if (is_null($user)) { 
+                return response()->json(['message' => 'Parece que esse usuário não existe na base de dados'], 404);
+            }
+
+            if (!is_null($user->typeUser)) {
+                return response()->json(['message' => 'Este usuário já possui um tipo de usuário definido'], 400);
+            }
+            $user->typeUser = $request->typeUser;
+            $user->save();
+            return response()->json(['message' => 'Tipo de usuário definido com sucesso!', 'user' => $user], 200);
+        }catch (\Exception $e) {
+            // Capatura qualquer exceção e retorna a mensagem de erro
+            return response()->json([
+                'error' => 'Ocorreu um erro ao buscar todos os usuário.',
+                'message' => env('APP_ENV') === 'local' ? $e->getMessage() : 'Erro inesperado. Tente novamente mais tarde.'
+            ], 500);
+        }
     }
 
     public function store(UserRequest $request)
@@ -47,7 +66,6 @@ class Users extends Controller
                 'email' => $validatedData['email'],
                 'profile' => $validatedData['profile'],
                 'password' => Hash::make($validatedData['password']),
-                'typeUser' => $validatedData['typeUser'],
                 'cit' => $validatedData['cit'],
                 'UF' => $validatedData['UF'],
                 'tel' => $validatedData['tel'],
@@ -144,4 +162,5 @@ class Users extends Controller
         }
     }
     
+
 }
