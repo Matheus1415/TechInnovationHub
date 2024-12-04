@@ -1,66 +1,365 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+### **Documentação Geral da API**
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+Essa API foi desenvolvida usando o **Laravel** e implementa um sistema para gerenciar usuários, startups e propostas de investimentos. A seguir, apresentamos a estrutura geral e os endpoints que a API oferece, bem como as instruções para autenticação e exemplos de uso.
 
-## About Laravel
+---
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+## **Estrutura do Projeto**
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+O projeto está dividido em três áreas principais:
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+1. **Autenticação (AuthController):** Gerencia a autenticação do usuário, login, logout e a obtenção de dados do usuário autenticado.
+    
+2. **Usuários (UsersController):** Gerencia as operações CRUD para usuários no sistema.
+    
+3. **Startups (StartupController):** Gerencia as operações CRUD para startups, incluindo a criação e manipulação de informações sobre as startups.
+    
+4. **Propostas (PropostasController):** Gerencia as operações CRUD para propostas, associando usuários e startups para investimento.
+    
 
-## Learning Laravel
+---
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+## **Autenticação**
 
-You may also try the [Laravel Bootcamp](https://bootcamp.laravel.com), where you will be guided through building a modern Laravel application from scratch.
+A autenticação no sistema é feita através do **Laravel Sanctum**, onde os usuários podem se autenticar e obter um token que deve ser incluído nas requisições subsequentes.
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+- **Endpoint:** `/login`
+    
+- **Método:** `POST`
+    
+- **Requisição (Login)**jsonCopiar código{ "email": "[usuario@exemplo.com](https://mailto:usuario@exemplo.com)", "password": "senha_do_usuario"}jsonCopiar código{ "token": "seu_token_aqui", "token_type": "bearer", "expires_in": null}
+    
+    **Resposta:**
+    
+- **Endpoint:** `/logout`
+    
+- **Método:** `POST`
+    
+- jsonCopiar código{ "message": "Usuário deslogado com sucesso"}
+    
+    **Resposta (Logout):**
+    
+- **Endpoint:** `/user`
+    
+- **Método:** `GET`
+    
+- jsonCopiar código{ "id": 1, "name": "Nome do Usuário", "email": "[usuario@exemplo.com](https://mailto:usuario@exemplo.com)", "created_at": "2024-01-01T12:00:00", "updated_at": "2024-01-01T12:00:00"}
+    
+    **Resposta (Dados do Usuário):**
+    
 
-## Laravel Sponsors
+---
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+## **Usuários**
 
-### Premium Partners
+O sistema permite gerenciar os usuários através de um conjunto de rotas que permitem a criação, listagem, exibição, atualização e exclusão de usuários.
 
-- **[Vehikl](https://vehikl.com/)**
-- **[Tighten Co.](https://tighten.co)**
-- **[WebReinvent](https://webreinvent.com/)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel/)**
-- **[Cyber-Duck](https://cyber-duck.co.uk)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Jump24](https://jump24.co.uk)**
-- **[Redberry](https://redberry.international/laravel/)**
-- **[Active Logic](https://activelogic.com)**
-- **[byte5](https://byte5.de)**
-- **[OP.GG](https://op.gg)**
+### **EndPoints de Usuários:**
 
-## Contributing
+#### 1\. **Listar Todos os Usuários**
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+- **Endpoint:** `/all-users`
+    
+- **Método:** `GET`
+    
+- **Autenticação:** Requer o token de acesso.
+    
 
-## Code of Conduct
+**Resposta:**
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+``` json
+[
+  {
+    "id": 1,
+    "name": "Nome do Usuário",
+    "email": "usuario@exemplo.com"
+  },
+  ...
+]
 
-## Security Vulnerabilities
+ ```
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+#### 2\. **Criar um Novo Usuário**
 
-## License
+- **Endpoint:** `/create-user`
+    
+- **Método:** `POST`
+    
+- **Autenticação:** Não é necessário um token de acesso.
+    
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+**Requisição:**
+
+``` json
+{
+  "name": "Novo Usuário",
+  "email": "usuario@exemplo.com",
+  "password": "senha_do_usuario"
+}
+
+ ```
+
+**Resposta:**
+
+``` json
+{
+  "message": "Usuário criado com sucesso!",
+  "user": {
+    "id": 1,
+    "name": "Novo Usuário",
+    "email": "usuario@exemplo.com"
+  }
+}
+
+ ```
+
+#### 3\. **Exibir Dados de um Usuário**
+
+- **Endpoint:** `/users/{id}`
+    
+- **Método:** `GET`
+    
+- **Autenticação:** Requer o token de acesso.
+    
+
+**Resposta:**
+
+``` json
+{
+  "id": 1,
+  "name": "Nome do Usuário",
+  "email": "usuario@exemplo.com"
+}
+
+ ```
+
+#### 4\. **Atualizar um Usuário**
+
+- **Endpoint:** `/users/{id}/edit`
+    
+- **Método:** `POST`
+    
+- **Autenticação:** Requer o token de acesso.
+    
+
+**Requisição:**
+
+``` json
+{
+  "name": "Nome Atualizado",
+  "email": "novo_email@exemplo.com"
+}
+
+ ```
+
+**Resposta:**
+
+``` json
+{
+  "message": "Usuário atualizado com sucesso!",
+  "user": {
+    "id": 1,
+    "name": "Nome Atualizado",
+    "email": "novo_email@exemplo.com"
+  }
+}
+
+ ```
+
+#### 5\. **Deletar um Usuário**
+
+- **Endpoint:** `/users/{id}`
+    
+- **Método:** `DELETE`
+    
+- **Autenticação:** Requer o token de acesso.
+    
+
+**Resposta:**
+
+``` json
+{
+  "message": "Usuário deletado com sucesso",
+  "user": {
+    "id": 1,
+    "name": "Nome do Usuário",
+    "email": "usuario@exemplo.com"
+  }
+}
+
+ ```
+
+---
+
+## **Startups**
+
+As rotas para **Startups** permitem a criação, listagem, exibição, atualização e exclusão de startups associadas aos usuários.
+
+### **EndPoints de Startups:**
+
+#### 1\. **Listar Todas as Startups**
+
+- **Endpoint:** `/all-startup`
+    
+- **Método:** `GET`
+    
+- **Autenticação:** Requer o token de acesso.
+    
+
+**Resposta:**
+
+``` json
+[
+  {
+    "id": 1,
+    "title": "Startup X",
+    "description": "Descrição da Startup",
+    "tempo_disponivel": "1 ano",
+    "tecnologias": ["PHP", "React"],
+    "contato_informacao": "contato@startupx.com",
+    "licenca": "MIT",
+    "tags": ["tecnologia", "inovação"],
+    "user_id": 1
+  },
+  ...
+]
+
+ ```
+
+#### 2\. **Criar uma Nova Startup**
+
+- **Endpoint:** `/create-startup`
+    
+- **Método:** `POST`
+    
+- **Autenticação:** Requer o token de acesso.
+    
+
+**Requisição:**
+
+``` json
+{
+  "title": "Startup X",
+  "description": "Descrição da Startup",
+  "tempo_disponivel": "1 ano",
+  "tecnologias": ["PHP", "React"],
+  "contato_informacao": "contato@startupx.com",
+  "licenca": "MIT",
+  "tags": ["tecnologia", "inovação"],
+  "user_id": 1
+}
+
+ ```
+
+**Resposta:**
+
+``` json
+{
+  "message": "Startup criada com sucesso!",
+  "startup": {
+    "id": 1,
+    "title": "Startup X",
+    "description": "Descrição da Startup",
+    "tempo_disponivel": "1 ano",
+    "tecnologias": ["PHP", "React"],
+    "contato_informacao": "contato@startupx.com",
+    "licenca": "MIT",
+    "tags": ["tecnologia", "inovação"],
+    "user_id": 1
+  }
+}
+
+ ```
+
+#### 3\. **Exibir Dados de uma Startup**
+
+- **Endpoint:** `/startup/{id}`
+    
+- **Método:** `GET`
+    
+- **Autenticação:** Requer o token de acesso.
+    
+
+**Resposta:**
+
+``` json
+{
+  "id": 1,
+  "title": "Startup X",
+  "description": "Descrição da Startup",
+  "tempo_disponivel": "1 ano",
+  "tecnologias": ["PHP", "React"],
+  "contato_informacao": "contato@startupx.com",
+  "licenca": "MIT",
+  "tags": ["tecnologia", "inovação"],
+  "user_id": 1
+}
+
+ ```
+
+---
+
+## **Propostas**
+
+As rotas de **Propostas** permitem a criação, listagem, exibição, atualização e exclusão de propostas feitas por usuários para startups.
+
+### **EndPoints de Propostas:**
+
+#### 1\. **Listar Todas as Propostas**
+
+- **Endpoint:** `/all-propostas`
+    
+- **Método:** `GET`
+    
+- **Autenticação:** Requer o token de acesso.
+    
+
+**Resposta:**
+
+``` json
+[
+  {
+    "id": 1,
+    "investimentos": 50000,
+    "user_id": 1,
+    "startup_id": 2
+  },
+  ...
+]
+
+ ```
+
+#### 2\. **Criar uma Nova Proposta**
+
+- **Endpoint:** `/create-propostas`
+    
+- **Método:** `POST`
+    
+- **Autenticação:** Requer o token de acesso.
+    
+
+**Requisição:**
+
+``` json
+{
+  "investimentos": 50000,
+  "user_id": 1,
+  "startup_id": 2
+}
+
+ ```
+
+**Resposta:**
+
+``` json
+{
+  "message": "Proposta criada com sucesso!",
+  "proposta": {
+    "id": 1,
+    "investimentos": 50000,
+    "user_id": 1,
+    "startup_id": 2
+  }
+}
+
+ ```
