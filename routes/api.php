@@ -7,8 +7,6 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\Propostas;
 use App\Http\Controllers\Startup;
 
-
-
 // Rota de login - Gera o token
 Route::post('/login', [AuthController::class, 'login']);
 Route::post('/create-user',[Users::class,'store'])->name("user.store");
