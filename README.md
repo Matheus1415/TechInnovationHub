@@ -29,7 +29,7 @@ A autenticação no sistema é feita através do **Laravel Sanctum**, onde os us
     
 - **Requisição (Login)**
     ``` json
-    { "email": "usuario@exemplo.com, "password": "senha_do_usuario"}
+    { "email": "usuario@exemplo.com", "password": "senha_do_usuario"}
     ```
     ``` json
     { "token": "seu_token_aqui", "token_type": "bearer", "expires_in": null}
