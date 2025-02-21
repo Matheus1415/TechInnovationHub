@@ -27,26 +27,17 @@ A autenticação no sistema é feita através do **Laravel Sanctum**, onde os us
     
 - **Método:** `POST`
     
-- **Requisição (Login)**jsonCopiar código{ "email": "[usuario@exemplo.com](https://mailto:usuario@exemplo.com)", "password": "senha_do_usuario"}jsonCopiar código{ "token": "seu_token_aqui", "token_type": "bearer", "expires_in": null}
-    
+- **Requisição (Login)**
+    ``` json
+    { "email": "usuario@exemplo.com, "password": "senha_do_usuario"}
+    ```
+    ``` json
+    { "token": "seu_token_aqui", "token_type": "bearer", "expires_in": null}
+    ```
+
     **Resposta:**
     
 - **Endpoint:** `/logout`
-    
-- **Método:** `POST`
-    
-- jsonCopiar código{ "message": "Usuário deslogado com sucesso"}
-    
-    **Resposta (Logout):**
-    
-- **Endpoint:** `/user`
-    
-- **Método:** `GET`
-    
-- jsonCopiar código{ "id": 1, "name": "Nome do Usuário", "email": "[usuario@exemplo.com](https://mailto:usuario@exemplo.com)", "created_at": "2024-01-01T12:00:00", "updated_at": "2024-01-01T12:00:00"}
-    
-    **Resposta (Dados do Usuário):**
-    
 
 ---
 
