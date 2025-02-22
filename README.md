@@ -1,6 +1,6 @@
 ### **Documentação Geral da API**
 
-Essa API foi desenvolvida usando o **Laravel** e implementa um sistema para gerenciar usuários, startups e propostas de investimentos. A seguir, apresentamos a estrutura geral e os endpoints que a API oferece, bem como as instruções para autenticação e exemplos de uso.
+Essa API foi desenvolvida usando o **Laravel** e implementa um sistema para gerenciar usuários, startups e proposalss de investimentos. A seguir, apresentamos a estrutura geral e os endpoints que a API oferece, bem como as instruções para autenticação e exemplos de uso.
 
 ---
 
@@ -14,7 +14,7 @@ O projeto está dividido em três áreas principais:
     
 3. **Startups (StartupController):** Gerencia as operações CRUD para startups, incluindo a criação e manipulação de informações sobre as startups.
     
-4. **Propostas (PropostasController):** Gerencia as operações CRUD para propostas, associando usuários e startups para investimento.
+4. **Proposals (ProposalsController):** Gerencia as operações CRUD para proposalss, associando usuários e startups para investimento.
     
 
 ---
@@ -290,15 +290,15 @@ As rotas para **Startups** permitem a criação, listagem, exibição, atualiza�
 
 ---
 
-## **Propostas**
+## **Proposals**
 
-As rotas de **Propostas** permitem a criação, listagem, exibição, atualização e exclusão de propostas feitas por usuários para startups.
+As rotas de **Proposals** permitem a criação, listagem, exibição, atualização e exclusão de proposalss feitas por usuários para startups.
 
-### **EndPoints de Propostas:**
+### **EndPoints de Proposals:**
 
-#### 1\. **Listar Todas as Propostas**
+#### 1\. **Listar Todas as Proposals**
 
-- **Endpoint:** `/all-propostas`
+- **Endpoint:** `/all-proposalss`
     
 - **Método:** `GET`
     
@@ -322,7 +322,7 @@ As rotas de **Propostas** permitem a criação, listagem, exibição, atualizaç
 
 #### 2\. **Criar uma Nova Proposta**
 
-- **Endpoint:** `/create-propostas`
+- **Endpoint:** `/create-proposalss`
     
 - **Método:** `POST`
     
@@ -345,7 +345,7 @@ As rotas de **Propostas** permitem a criação, listagem, exibição, atualizaç
 ``` json
 {
   "message": "Proposta criada com sucesso!",
-  "proposta": {
+  "proposals": {
     "id": 1,
     "investimentos": 50000,
     "user_id": 1,

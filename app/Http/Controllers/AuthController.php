@@ -12,31 +12,31 @@ class AuthController extends Controller
     public function login(Request $request)
     {
         try {
-            // Validação de campos
+            if (auth()->check()) {
+                return redirect('/');
+            }
+
             $this->validate($request, [
                 'email' => 'required|email',
                 'password' => 'required'
             ]);
 
-            // Captura das credenciais do usuário
             $credentials = $request->only('email', 'password');
             
-            // Tentativa de autenticação do usuário
             if (!Auth::attempt($credentials)) {
                 return response()->json([
                     "message" => "Ops, parece que seu e-mail ou senha estão incorretos."
                 ], 401);
             }
 
-            // Se a autenticação foi bem-sucedida, cria um token via Sanctum
             $user = Auth::user();
             $token = $user->createToken('access-token')->plainTextToken;
 
-            // Retorna o token gerado e informações sobre ele
             return response()->json([
+                "message" =>"Usúario logado",
                 'token' => $token,
                 'token_type' => 'bearer',
-                'expires_in' => null // Sanctum não lida com expiração por padrão
+                'expires_in' => null 
             ]);
         } catch (\Exception $e) {
             return response()->json([

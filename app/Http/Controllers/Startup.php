@@ -16,11 +16,11 @@ class Startup extends Controller
         try {
             $allStartaps = ModelsStartup::all();
             if ($allStartaps->isEmpty()) {
-                return response()->json('Parece que não existe nenhuma Startup na base de dados', 404);
+                return response()->json(['message' => 'Parece que não existe nenhuma Startup na base de dados'], 404);
             }
 
             return response()->json($allStartaps, 200);
-        }catch (\Exception $e) {
+        } catch (\Exception $e) {
             // Captura qualquer exceção e retorna a mensagem de erro
             return response()->json([
                 'error' => 'Ocorreu um erro ao buscar todas as statups.',
@@ -36,7 +36,7 @@ class Startup extends Controller
             $validatedData = $request->validated();
             $user = User::find($validatedData['user_id']);
             // Corrigindo a verificação de existência do usuário
-            if(!$user){
+            if (!$user) {
                 return response()->json([
                     'error' => 'Usuário não existe.',
                     'message' => 'Parece que esse usuário não existe na base de dados.'
@@ -79,7 +79,7 @@ class Startup extends Controller
             // Captura qualquer exceção e retorna a mensagem de erro
             return response()->json([
                 'error' => 'Ocorreu um erro ao buscar uma startup.',
-                'message' => env('APP_ENV') === 'local'? $e->getMessage() : 'Erro inesperado. Tente novamente mais tarde.'
+                'message' => env('APP_ENV') === 'local' ? $e->getMessage() : 'Erro inesperado. Tente novamente mais tarde.'
             ], 500);
         }
     }
@@ -103,10 +103,11 @@ class Startup extends Controller
             $startup->title = $validatedData['title'];
             $startup->description = $validatedData['description'];
             $startup->tempo_disponivel = $validatedData['tempo_disponivel'];
-            $startup->tecnologias = $validatedData['tecnologias'];
             $startup->contato_informacao = $validatedData['contato_informacao'];
             $startup->licenca = $validatedData['licenca'];
-            $startup->tags = $validatedData['tags'];
+            $startup->tecnologias = json_decode($startup->tecnologias, true);
+            $startup->tags = json_decode($startup->tags, true);
+
             $startup->save();
 
             // Retorna uma resposta de sucesso
@@ -124,50 +125,63 @@ class Startup extends Controller
     public function destroy(string $id)
     {
         try {
-            $startup = ModelsStartup::find($id);//Emcontra a Startuo pelo ID
-            if (is_null($startup)) { // Verifica se o usuário não foi encontrado
-                return response()->json(['message' => 'Parece que essa startup não existe na base de dados'], 404);
+            $user = Auth::user(); 
+
+            $startup = ModelsStartup::find($id); 
+
+            if (is_null($startup)) {
+                return response()->json([
+                    'message' => 'Parece que essa startup não existe na base de dados.'
+                ], 404);
             }
 
-            $startup->delete(); // Deleta o startup
-            
+            if ($startup->user_id !== $user->id && $user->typeUser !== 4) {
+                return response()->json([
+                    'message' => 'Você não tem permissão para excluir esta startup.'
+                ], 403);
+            }
+
+            $startup->delete();
+
             return response()->json([
-                'message' => 'Startup deletado com sucesso.',
-                'startup' => $startup,
-            ], 200); 
+                'message' => 'Startup deletada com sucesso.',
+                'startup' => $startup
+            ], 200);
 
         } catch (\Exception $e) {
-            // Captura qualquer exceção e retorna a mensagem de erro
             return response()->json([
-                'error' => 'Ocorreu um erro ao atualizar a startup.',
+                'error' => 'Ocorreu um erro ao deletar a startup.',
                 'message' => env('APP_ENV') === 'local' ? $e->getMessage() : 'Erro inesperado. Tente novamente mais tarde.'
             ], 500);
         }
     }
 
-    public function destroyGroup(string $id)
+
+    public function destroyGroup()
     {
-        $user = Auth::user();
-        dd($user);
         try {
-            $startup = ModelsStartup::find($id);//Emcontra a Startuo pelo ID
-            if (is_null($startup)) { // Verifica se o usuário não foi encontrado
-                return response()->json(['message' => 'Parece que essa startup não existe na base de dados'], 404);
+            $user = Auth::user();
+            $startups = ModelsStartup::where('user_id', $user->id)->get();
+
+            if ($startups->isEmpty()) {
+                return response()->json([
+                    'message' => 'Você não possui startups para deletar.'
+                ], 404);
             }
 
-            $startup->delete(); // Deleta o startup
-            
+            ModelsStartup::where('user_id', $user->id)->delete();
+
             return response()->json([
-                'message' => 'Startup deletado com sucesso.',
-                'startup' => $startup,
-            ], 200); 
+                'message' => 'Todas as suas startups foram deletadas com sucesso.',
+                'deleted_startups' => $startups
+            ], 200);
 
         } catch (\Exception $e) {
-            // Captura qualquer exceção e retorna a mensagem de erro
             return response()->json([
-                'error' => 'Ocorreu um erro ao atualizar a startup.',
+                'error' => 'Ocorreu um erro ao deletar suas startups.',
                 'message' => env('APP_ENV') === 'local' ? $e->getMessage() : 'Erro inesperado. Tente novamente mais tarde.'
             ], 500);
         }
     }
+
 }

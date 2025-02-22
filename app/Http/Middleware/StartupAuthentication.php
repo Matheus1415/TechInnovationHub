@@ -12,7 +12,7 @@ class StartupAuthentication
     {
         $user = $request->user();
         
-        if ($user->typeUser != 3 || $user->typeUser != 4) {
+        if ($user->typeUser == 1 || $user->typeUser == 2) {
             return response()->json([
                 'message' => 'Você não tem permissão para criar uma startup.'
             ], 403); 

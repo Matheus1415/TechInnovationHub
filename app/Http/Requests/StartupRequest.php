@@ -32,7 +32,6 @@ class StartupRequest extends FormRequest
                 'user_id' => ['required', 'exists:users,id'],
             ];
         } elseif ($this->isMethod('put')) {
-            // Regras para a atualização da startup
             return [
                 'title' => ['nullable', 'string', 'max:255'], 
                 'description' => ['nullable', 'string'], 
@@ -43,7 +42,6 @@ class StartupRequest extends FormRequest
                 'licenca' => ['nullable', 'string'], 
                 'tags' => ['nullable', 'array'], 
                 'tags.*' => ['string'],
-                // O user_id não deve ser incluído aqui
             ];
         }
 
