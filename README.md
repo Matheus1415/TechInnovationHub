@@ -614,7 +614,8 @@ Esta API permite a criação, visualização, atualização e exclusão de propo
 
   ```json
   { "id": 1, "investimentos": "10000", "user_id": 2, "startup_id": 3 }
-```### 4. **Atualizar Proposta**
+    ```
+### 4. **Atualizar Proposta**
 
 - **Método**: `PUT`
 - **Rota**: `/proposals/{id}`
